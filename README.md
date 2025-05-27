@@ -13,7 +13,7 @@ This script attempts to recover files from a storage device (like a formatted ha
 1.  **Ensure Prerequisites:**
     *   Python 3.x installed and added to your system's PATH.
     *   The `file_signatures.py` and `recovery_tool.py` files must be in the same directory as `run_recovery.bat`.
-2.  **Identify your target partition:** Follow the general instructions in step 1 of "Manual Execution (All Platforms)" below to identify the partition (e.g., `D:`, `\\.\D:`).
+2.  **Identify your target partition:** For Windows, you need to specify the raw device path. For example, if your target partition is `D:`, you should use `\\.\D:` when the script prompts you. (See more details under "Manual Execution" step 1 if needed).
 3.  **Prepare a recovery drive:** Ensure you have a separate physical storage device (another hard drive, a large USB stick) with enough free space. **DO NOT use a folder on the same drive you are recovering from.**
 4.  **Run the Batch File:**
     *   Navigate to the directory containing `run_recovery.bat`.
@@ -22,7 +22,11 @@ This script attempts to recover files from a storage device (like a formatted ha
 
 ### Manual Execution (All Platforms)
 1.  **Identify your target partition:**
-    *   **Windows:** Open File Explorer, go to 'This PC'. Partitions are C:, D:, etc. For raw access, you might need paths like `\\.\PhysicalDriveN` (for whole disks, VERY DANGEROUS) or `\\.\D:` (for partitions). The script will prompt for this.
+    *   **Windows:** Open File Explorer, go to 'This PC'. Partitions are listed (e.g., `C:`, `D:`). For the recovery script to get raw access, you must use a special path format when prompted:
+        *   For a partition like `D:`, enter `\\.\D:`
+        *   For a partition like `E:`, enter `\\.\E:`
+        *   This `\\.\X:` notation is crucial for direct disk access.
+        *   Paths like `\\.\PhysicalDriveN` (e.g., `\\.\PhysicalDrive0`) refer to entire physical disks, not just partitions. Accessing a whole disk this way is possible but **requires extreme caution** to ensure you are targeting the correct device, as it gives access to all partitions on that disk. For recovering a specific partition (like `D:`), using `\\.\D:` is generally safer.
     *   **Linux:** Open a terminal, run `lsblk` or `sudo fdisk -l` (e.g., `/dev/sda1`).
     *   **macOS:** Open Terminal, run `diskutil list` (e.g., `/dev/disk2s1`).
 2.  **Prepare a recovery drive:** (This step is somewhat duplicated but good to have here too) Ensure you have a separate physical storage device (another hard drive, a large USB stick) with enough free space to save recovered files. **DO NOT use a folder on the same drive you are recovering from.**

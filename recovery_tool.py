@@ -189,8 +189,8 @@ def recover_files(partition_path, recovery_folder, signatures):
                             partition_file.seek(abs_start_offset_in_partition)
                             file_data = partition_file.read(size_to_recover)
                             print(f"  Extracted {len(file_data)} bytes (fixed-size) directly from partition.")
-                        except Exception as e_read:
-                            print(f"  Error during fixed-size direct read: {e_read}", file=sys.stderr)
+                        except IOError as e_read:
+                            print(f"  Warning: Could not read full {size_to_recover // 1024}KB for {output_filename} at offset {abs_start_offset_in_partition}: {e_read}. File will not be saved from this attempt.", file=sys.stderr)
                             file_data = None
                         finally:
                             partition_file.seek(saved_pos) # Restore for main loop reading
