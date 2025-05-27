@@ -1,0 +1,48 @@
+# Python Data Recovery Script
+
+## Description
+This script attempts to recover files from a storage device (like a formatted hard drive or USB stick) by searching for known file signatures (magic numbers). It reads the raw device data and tries to carve out files based on these signatures.
+
+## Prerequisites
+- Python 3.x installed.
+- The `file_signatures.py` file (containing the file signatures to search for) must be in the same directory as `recovery_tool.py`.
+
+## How to Run
+1.  **Identify your target partition:**
+    *   **Windows:** Open File Explorer, go to 'This PC'. Partitions are C:, D:, etc. For raw access, you might need paths like `\\.\PhysicalDriveN` (for whole disks, VERY DANGEROUS) or `\\.\D:` (for partitions). The script will prompt for this.
+    *   **Linux:** Open a terminal, run `lsblk` or `sudo fdisk -l` (e.g., `/dev/sda1`).
+    *   **macOS:** Open Terminal, run `diskutil list` (e.g., `/dev/disk2s1`).
+2.  **Prepare a recovery drive:** Ensure you have a separate physical storage device (another hard drive, a large USB stick) with enough free space to save recovered files. **DO NOT use a folder on the same drive you are recovering from.**
+3.  **Open a terminal or command prompt:**
+    *   **Windows:** Search for `cmd` or `PowerShell`. **Run as Administrator.**
+    *   **Linux/macOS:** Open your terminal application.
+4.  **Navigate to the script directory:** Use the `cd` command to go to the folder where you saved `recovery_tool.py` and `file_signatures.py`.
+    ```bash
+    cd path/to/your/script_directory
+    ```
+5.  **Run the script:**
+    *   **Windows (as Administrator):**
+        ```bash
+        python recovery_tool.py
+        ```
+    *   **Linux/macOS (with sudo for raw disk access):**
+        ```bash
+        sudo python3 recovery_tool.py
+        ```
+    The script will then prompt you to enter the target partition path and the recovery folder path.
+
+## !!! CRUCIAL WARNINGS !!!
+- **RUN WITH ADMINISTRATIVE/ROOT PRIVILEGES:** The script needs low-level access to read from a partition/drive.
+  - On Windows, run Command Prompt or PowerShell "as Administrator".
+  - On Linux/macOS, use `sudo` when running the script (e.g., `sudo python3 recovery_tool.py`).
+- **SELECT THE CORRECT PARTITION:** Double-check the partition path you provide. Reading from a system drive or the wrong drive could be problematic if mistakes are made, though this script is designed for read-only access to the source. The primary risk is choosing the wrong *recovery location* and overwriting data.
+- **SAVE TO A DIFFERENT DRIVE:** Always save recovered files to a completely separate physical drive. Writing recovered files to the same drive you are recovering from will likely overwrite the very data you are trying to recover, leading to permanent data loss.
+- **NO GUARANTEES:** Data recovery is complex. This script is a best-effort tool and provides NO GUARANTEE that it will recover any or all of your lost files. Success depends on many factors, including how the drive was formatted, whether data has been overwritten, file fragmentation, and the types of files.
+- **RISK OF DATA LOSS (IF MISUSED):** While this script is designed to be read-only from the source partition, any data recovery attempt carries inherent risks if instructions are not followed precisely (especially regarding the recovery drive). Proceed with caution.
+- **BACKUPS ARE KEY:** This incident highlights the importance of regular data backups.
+
+## Customizing File Signatures
+You can add or modify file signatures by editing the `FILE_SIGNATURES` dictionary in the `file_signatures.py` file. Each entry defines a file type (extension), its start signature(s), and optionally an end signature. Signatures are represented as byte strings.
+
+## Disclaimer
+This script is provided "as-is" without warranty of any kind. The authors or distributors are not responsible for any data loss or damage that may occur from its use. Use at your own risk.
